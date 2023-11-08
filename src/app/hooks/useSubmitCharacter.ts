@@ -1,11 +1,11 @@
-export default function handleSubmit(...characters:string[]) {
-    characters.forEach(async (nome) => {
-      fetch(`http://localhost:8080/${nome.toLowerCase()}`, {
+export default function handleSubmit(characters:{name: string, class: string}[]) {
+    characters.forEach(async (item) => {
+      fetch(`http://localhost:8080/${item.class.toLowerCase()}`, {
         headers: {
           "Content-Type": "application/json"
         },
         method: "post",
-        body: JSON.stringify({ nome })
+        body: JSON.stringify({ nome: item.name })
       })
     })
     
