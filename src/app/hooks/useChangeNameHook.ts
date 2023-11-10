@@ -1,9 +1,7 @@
 import React, { ChangeEventHandler } from "react";
 
-export default function useChangeNameHook(): [
-  character: string,
-  handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined
-] {
+export default function useChangeNameHook(): [ character: string, handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined] {
+  
   const [character, setCharacter] = React.useState("");
 
   const handleChange = (event: any) => {
