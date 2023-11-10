@@ -1,9 +1,9 @@
 import { SelectChangeEvent, TextField } from "@mui/material";
-import BasicSelect from "./BasicSelect";
+import {BasicSelect} from "./BasicSelect";
 import { ChangeEventHandler } from "react";
 import Image from "next/image";
 
-export default function CaracterSelect
+export function CaracterSelect
   ({
     characterClass,handleClassChange, characterName, handleNameChange}: {characterClass: string; handleClassChange: ((event: SelectChangeEvent<string>, child: React.ReactNode) => void) | undefined;characterName: string; handleNameChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined  
   }) {

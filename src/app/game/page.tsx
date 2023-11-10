@@ -1,11 +1,14 @@
 "use client";
-import CaracterSelect from "./components/CaracterSelect";
+import { CaracterSelect } from "./components/CaracterSelect";
 import { Button } from "@mui/material";
 import useBasicSelectHook from "../hooks/useBasicSelectHook";
 import useChangeNameHook from "../hooks/useChangeNameHook";
 import handleSubmit from "../hooks/useSubmitCharacter";
+import { useRouter } from "next/navigation";
 
 export default function Game() { 
+
+  const router = useRouter()
 
   const [characterClass1, handleClassChange1] = useBasicSelectHook();
   const [characterClass2, handleClassChange2] = useBasicSelectHook();
@@ -25,7 +28,7 @@ export default function Game() {
         </div>
         <div className="flex justify-end m-8 pt-8">
           <Button
-            onClick={() => { handleSubmit([{name: characterName1, class: characterClass1}, {name: characterName2, class: characterClass2}, {name: characterName3, class: characterClass3}]) }}
+            onClick={() => { handleSubmit([{name: characterName1, class: characterClass1}, {name: characterName2, class: characterClass2}, {name: characterName3, class: characterClass3}]).then(() => { router.replace('/game/battle') }) }}
             className="px-16 py-4 rounded-full text-lg bg-gradient-to-tr from-green-500 to-green-800"
             variant="contained"
           >
