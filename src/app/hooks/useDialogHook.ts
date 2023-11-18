@@ -9,7 +9,8 @@ export function useDialogHooks() :
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleClose = (func:Function | undefined) => {
+        func ? func() : null
         setOpen(false);
     };
 

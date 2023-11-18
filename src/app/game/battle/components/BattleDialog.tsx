@@ -1,10 +1,9 @@
 "use client";
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
-import { DialogContent, DialogContentText } from "@mui/material";
+import { DialogContent, DialogContentText, Slide } from "@mui/material";
 
 export default function BattleDialog({
   attack = 0,
