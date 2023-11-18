@@ -5,7 +5,8 @@ import { Character } from "./components/Character";
 import Enemy from "./components/Enemy";
 import { useDialogHooks } from "@/app/hooks/useDialogHook";
 import { DialogBox } from "./components/DialogBox";
-import { timeout } from "@/app/utils";
+import { generateRandom, timeout } from "@/app/utils";
+import { log } from "console";
 
 //Criar useEffect para verificar quem pode agir, e permitir escolher ação caso seja um player
 
@@ -139,9 +140,13 @@ export default function Battle() {
         }
       }
       //@ts-ignore
-      if(actualEntity.side == "P" | actualEntity.side=="E"){
+      if(actualEntity.side == "P"){
         type = 3
         handleClickOpen()
+      }
+      else {
+        type = 6
+        setDialogText("Turno do inimigo")
       }
     }
     else if(type == 4){
@@ -155,6 +160,23 @@ export default function Battle() {
       })
       type = 2
       setDialogText("Deu bom")
+    }
+
+    else if(type == 6){
+      const alivePlayers: any[] = []
+      mock.players.forEach((player) => {
+        if(player.vida > 0){
+          alivePlayers.push(player)
+        }
+      })
+      const playerAttacked = alivePlayers[generateRandom(0, alivePlayers.length-1)]
+      mock.players.forEach((item,index) => {
+        if(item.id == playerAttacked.id){
+          mock.players[index].vida -= 20
+        }
+      })
+      type = 2
+      setDialogText("Seu turno agora")
     }
   })
 
