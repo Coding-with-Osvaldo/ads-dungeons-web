@@ -6,196 +6,154 @@ import Enemy from "./components/Enemy";
 import { useDialogHooks } from "@/app/hooks/useDialogHook";
 import { DialogBox } from "./components/DialogBox";
 import { generateRandom, timeout } from "@/app/utils";
-import { log } from "console";
-
-//Criar useEffect para verificar quem pode agir, e permitir escolher ação caso seja um player
-
-//@ts-ignore
-const mock: { players: { id: number, name: string, mana: number, vida: number, side: "P" }[], enemies: { id: number, type: "Skeleton" | "Zombie" | "Orc" | "Slime", vida: number, side: "E" }[] } = {
-  players: [
-    {
-      id: 1,
-      name: "Jose",
-      mana: 100,
-      vida: 100,
-      side: "P"
-    },
-    {
-      id: 2,
-      name: "Jv",
-      mana: 0,
-      vida: 100,
-      side: "P"
-    },
-    {
-      id: 3,
-      name: "Gabriel",
-      vida: 100,
-      mana: 100,
-      side: "P"
-    }
-  ],
-  enemies: [
-    {
-      id: 4,
-      type: "Skeleton",
-      vida: 100,
-      side: "E"
-    },
-    {
-      id: 5,
-      type: "Zombie",
-      vida: 100,
-      side: "E"
-    },
-    {
-      id: 6,
-      type: "Orc",
-      vida: 100,
-      side: "E"
-    }
-  ]
-}
-
-let type = 0
-
-const turns = [1,4,2,5,3,6]
-const isPlayable = [true, false, false, false, false, false]
-
-let actualEntity:any = null
-let lastIndex = -1
+import { mock } from "@/data/mock";
+import { gameController } from "@/app/utils/gameController";
 
 
-function getEntitie(index: number):{}{
-  let result = {}
-  mock.players.forEach(item => {
-    if(item.id == index){
-      result = item
-    }
-  })
-  mock.enemies.forEach(item => {
-    if(item.id == index){
-      result = item
-    }
-  })
-  return result
-}
+/* Funcionamento da variavel actualAction
+  actualAction == 0 -> Introduz o jogo por meio de mensagens no dialogbox
+  actualAction == 1 -> Impede o useEffect de executar outra ação enquanto atualiza as mensagens
+  actualAction == 2 -> Realiza um teste para saber quem vai jogar agora, se é personagem ou inimigo
+  actualAction == 3 ...
+  actualAction == 4
+  actualAction == 5
+  actualAction == 6
+ 
+*/
+
+
+let [actualAction, actualEntity, updateTurn] = gameController()
 
 export default function Battle() {
 
-  function enemyPlay(){
-    //Inimigo joga
-  }
-
-  function playerPlay(){
-    //Player joga
-  }
-
-  const [open, handleClickOpen, handleClose] = useDialogHooks()
+  const [open, handleClickOpen, handleClose, dialogText, setDialogText, writeWithDelay] = useDialogHooks()
 
   const [lastAction, setLastAction] = useState("")
   const [lastTarget, setLastTarget] = useState(-1)
 
-  let [dialogText, setDialogText] = useState("")
+  useEffect(() => { // eslint-disable-line
+    if(actualAction == 0){
 
-  async function writeWithDelay(text: string, delay: number){
-    dialogText = ""
-    setDialogText(dialogText)
-    for (let letter of text.split("")){
-      dialogText += letter
-      setDialogText(dialogText)
-      await timeout(delay)
-    }
-  }
-
-  useEffect(() => {
-    if(type == 0){
       (async () => {
-        type = 1
-        //Aqui vai ficar embelezamento das animações
+
+        actualAction = 1
+
         await writeWithDelay("A batalha esta começando", 0.05)
         await timeout(3)
-        //Mostrar inimigos
         await writeWithDelay("3 2 1", 1)
         await timeout(2)
-        type = 2
-        setDialogText("")
+
+        actualAction = 2
+
+        setDialogText(".")
+
       })()
     }
-    else if(type == 2){
-      lastIndex = -1
-      turns.forEach((item,index) => {
-        if(isPlayable[index]){
-          lastIndex = index
-          actualEntity = getEntitie(turns[index])
-        }
-      })
-      if(actualEntity != null){
-        if(lastIndex+1 == turns.length){
-          isPlayable[lastIndex] = false
-          isPlayable[0] = true
-        }else {
-          isPlayable[lastIndex] = false
-          isPlayable[lastIndex+1] = true
-        }
-      }
-      //@ts-ignore
+    else if(actualAction == 2){
+
+      //Testar game over
+
+      actualEntity = updateTurn() //Altera a entidate selecionada
+
       if(actualEntity.side == "P"){
-        type = 3
+        actualAction = 3
         handleClickOpen()
       }
+
       else {
-        type = 6
+        actualAction = 6
         setDialogText("Turno do inimigo")
       }
+
     }
-    else if(type == 4){
+    else if(actualAction == 4){
       setDialogText("Escolha um inimigo")
     }
-    else if(type == 5){
+
+    else if(actualAction == 5){
       mock.enemies.forEach((item,index) => {
         if(item.id == lastTarget){
           mock.enemies[index].vida -= 20
         }
       })
-      type = 2
-      setDialogText("Deu bom")
+
+      actualAction = 2
+
+      setDialogText("..")
+
     }
 
-    else if(type == 6){
-      const alivePlayers: any[] = []
-      mock.players.forEach((player) => {
-        if(player.vida > 0){
-          alivePlayers.push(player)
-        }
-      })
-      const playerAttacked = alivePlayers[generateRandom(0, alivePlayers.length-1)]
-      mock.players.forEach((item,index) => {
-        if(item.id == playerAttacked.id){
-          mock.players[index].vida -= 20
-        }
-      })
-      type = 2
-      setDialogText("Seu turno agora")
+    else if(actualAction == 6){
+
+      (async () => {
+
+        actualAction = 7
+        const alivePlayers: any[] = []
+        mock.players.forEach((player) => {
+          if(player.vida > 0){
+            alivePlayers.push(player)
+          }
+        })
+
+        await writeWithDelay("Um inimigo esta atacando",0.07)
+        await timeout(2)
+
+        const playerAttacked = alivePlayers[generateRandom(0, alivePlayers.length-1)]
+        mock.players.forEach((item,index) => {
+          if(item.id == playerAttacked.id){
+            mock.players[index].vida -= 20
+          }
+        })
+
+        await writeWithDelay("Um player foi atacado",0.05)
+        await timeout(2)
+
+        actualAction = 2
+
+        setDialogText("Seu turno agora")
+      })()
     }
   })
 
   return (
     <main className="flex flex-col h-screen">
+
       <div
         className=" flex items-center justify-center gap-5"
-        style={{ flex: 4 }}
-      >
-        {mock.enemies.map(item => <Enemy handleClick={() => { type = 5; setLastTarget(item.id) }} key={item.id} type={item.type} life={item.vida} />)}
+        style={{ flex: 4 }}>
+
+        {mock.enemies
+        .map(item => <Enemy 
+          handleClick={() => { actualAction = 5; setLastTarget(item.id); setDialogText("...")}} 
+          key={item.id} 
+          type={item.type} 
+          life={item.vida} />
+        )}
+
       </div>
-      <BattleDialog setAction={setLastAction} handleClose={() => {type=4; handleClose();}} open={open} attack={100} defense={50} />
+
+      <BattleDialog 
+        setAction={setLastAction} 
+        handleClose={() => {actualAction=4; handleClose();}} 
+        open={open} 
+        attack={100} 
+        defense={50} 
+      />
+
       <DialogBox text={dialogText} />
+
       <div
         className="flex flex-row gap-1 w-screen justify-center items-end"
-        style={{ flex: 1 }}
-      >
-        {mock.players.map(item => <Character key={item.id} name={item.name} mana={item.mana} life={item.vida} />)}
+        style={{ flex: 1 }}>
+        {mock.players
+          .map(item => <Character 
+            key={item.id} 
+            name={item.name} 
+            mana={item.mana} 
+            life={item.vida} />
+        )}
       </div>
+
     </main>
   );
 }

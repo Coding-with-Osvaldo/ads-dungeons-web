@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { timeout } from "../utils";
 
 export function useDialogHooks() : 
-[open :boolean, handleClickOpen:Function, handleClose: Function]
+[open :boolean, handleClickOpen:Function, handleClose: Function, dialogText: string, setDialogText: Function, writeWithDelay: Function]
 {
     const [open, setOpen] = useState(false);
 
@@ -14,5 +15,17 @@ export function useDialogHooks() :
         setOpen(false);
     };
 
-    return [open, handleClickOpen, handleClose]
+    let [dialogText, setDialogText] = useState("")
+
+    async function writeWithDelay(text: string, delay: number){
+        dialogText = ""
+        setDialogText(dialogText)
+        for (let letter of text.split("")){
+        dialogText += letter
+        setDialogText(dialogText)
+        await timeout(delay)
+        }
+    }
+
+    return [open, handleClickOpen, handleClose, dialogText, setDialogText, writeWithDelay]
 }
