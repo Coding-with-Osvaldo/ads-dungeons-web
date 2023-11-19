@@ -8,6 +8,7 @@ import { DialogBox } from "./components/DialogBox";
 import { generateRandom, timeout } from "@/app/utils";
 import { mock } from "@/data/mock";
 import { gameController } from "@/app/utils/gameController";
+import { ResultBox } from "./components/ResultBox";
 
 
 /* Funcionamento da variavel actualAction
@@ -18,7 +19,6 @@ import { gameController } from "@/app/utils/gameController";
   actualAction == 4
   actualAction == 5
   actualAction == 6
- 
 */
 
 
@@ -115,6 +115,16 @@ export default function Battle() {
     }
   })
 
+  const [resultStatus,setResultStatus] = useState(false)
+
+  const handleOpenResult = () => {
+    setResultStatus(true)
+  }
+
+  const handleCloseResult = () => {
+    setResultStatus(false)
+  }
+
   return (
     <main className="flex flex-col h-screen">
 
@@ -131,7 +141,7 @@ export default function Battle() {
         )}
 
       </div>
-
+        <ResultBox open = {resultStatus} handleClickOpen={handleOpenResult} handleClose={handleCloseResult} status={false} />  
       <BattleDialog 
         setAction={setLastAction} 
         handleClose={() => {actualAction=4; handleClose();}} 

@@ -1,10 +1,11 @@
 "use client";
 import { CaracterSelect } from "./components/CaracterSelect";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import useBasicSelectHook from "../hooks/useBasicSelectHook";
 import useChangeNameHook from "../hooks/useChangeNameHook";
 import handleSubmit from "../hooks/useSubmitCharacter";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Game() { 
 
@@ -18,6 +19,8 @@ export default function Game() {
   const [characterName2, handleNameChange2] = useChangeNameHook();
   const [characterName3, handleNameChange3] = useChangeNameHook();
 
+  const [name, setName] = useState("")
+
   return (
     <>
       <div className="bg-gray-100 h-screen md:overflow-y-hidden">
@@ -26,9 +29,18 @@ export default function Game() {
           <CaracterSelect characterClass={characterClass2} handleClassChange={handleClassChange2} characterName={characterName2} handleNameChange={handleNameChange2}/>
           <CaracterSelect characterClass={characterClass3} handleClassChange={handleClassChange3} characterName={characterName3} handleNameChange={handleNameChange3}/>
         </div>
-        <div className="flex justify-end m-8 pt-8">
+        <div className="flex justify-between m-8 pt-8">
+          <TextField
+            value={name}
+            onChange={ (e) => { setName(e.target.value) }}
+            className="w-70 pt-4 rounded-l-lg"
+            id="filled-basic"
+            label="Nome do usuário"
+            variant="filled"
+          />
+    
           <Button
-            onClick={() => { handleSubmit([{name: characterName1, class: characterClass1}, {name: characterName2, class: characterClass2}, {name: characterName3, class: characterClass3}]).then(() => { router.replace('/game/battle') }) }}
+            onClick={() => { handleSubmit(name,[{name: characterName1, class: characterClass1}, {name: characterName2, class: characterClass2}, {name: characterName3, class: characterClass3}]).then(() => { router.replace('/game/battle') }) }}
             className="px-16 py-4 rounded-full text-lg bg-gradient-to-tr from-green-500 to-green-800"
             variant="contained"
           >
