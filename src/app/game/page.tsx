@@ -38,9 +38,9 @@ export default function Game() {
             label="Nome do usuário"
             variant="filled"
           />
-    
+          {/* Se possivel, mandar rotas pelo body ao inves da url */}
           <Button
-            onClick={() => { handleSubmit(name,[{name: characterName1, class: characterClass1}, {name: characterName2, class: characterClass2}, {name: characterName3, class: characterClass3}]).then(() => { router.replace('/game/battle') }) }}
+            onClick={() => { handleSubmit(name,[{name: characterName1, type: characterClass1.charAt(0)}, {name: characterName2, type: characterClass2.charAt(0)}, {name: characterName3, type: characterClass3.charAt(0)}]).then((id) => { router.replace(`/game/battle/${id}`) }) }}
             className="px-16 py-4 rounded-full text-lg bg-gradient-to-tr from-green-500 to-green-800"
             variant="contained"
           >

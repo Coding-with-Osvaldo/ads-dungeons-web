@@ -24,7 +24,7 @@ import { ResultBox } from "./components/ResultBox";
 
 let [actualAction, actualEntity, updateTurn] = gameController()
 
-export default function Battle() {
+export default function Battle({params}: {params: {id: string}}) {
 
   const [open, handleClickOpen, handleClose, dialogText, setDialogText, writeWithDelay] = useDialogHooks()
 
