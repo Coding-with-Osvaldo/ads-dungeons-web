@@ -40,7 +40,7 @@ export default function Game() {
           />
           {/* Se possivel, mandar rotas pelo body ao inves da url */}
           <Button
-            onClick={() => { handleSubmit(name,[{name: characterName1, type: characterClass1.charAt(0)}, {name: characterName2, type: characterClass2.charAt(0)}, {name: characterName3, type: characterClass3.charAt(0)}]).then((id) => { router.replace(`/game/battle/${id}`) }) }}
+            onClick={() => { handleSubmit(name,[{nome: characterName1, type: characterClass1.charAt(0)}, {nome: characterName2, type: characterClass2.charAt(0)}, {nome: characterName3, type: characterClass3.charAt(0)}]).then((id) => { router.replace(`/game/battle/${id}`) }) }}
             className="px-16 py-4 rounded-full text-lg bg-gradient-to-tr from-green-500 to-green-800"
             variant="contained"
           >

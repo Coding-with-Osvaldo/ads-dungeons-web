@@ -11,7 +11,7 @@ export function generateTurns(list1: any[], list2: any[]) {
     list2.forEach((r, i) => list1.splice(interval * (i + 1) + i, 0, r))
 
     let turns = list1
-    let isPlayable = [Array(turns.length).keys()].map((item, index) => index == 0 ? true : false)
+    let isPlayable = turns.map((item:any,index:number) => index == 0 ? true : false)
 
     return [turns, isPlayable]
 }
