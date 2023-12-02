@@ -3,7 +3,7 @@ import { CaracterSelect } from "./components/CaracterSelect";
 import { Button, TextField } from "@mui/material";
 import useBasicSelectHook from "../hooks/useBasicSelectHook";
 import useChangeNameHook from "../hooks/useChangeNameHook";
-import handleSubmit from "../hooks/useSubmitCharacter";
+import {handleSubmit} from "../hooks/useSubmitCharacter";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

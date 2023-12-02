@@ -8,23 +8,20 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export function ResultBox({
     open,
-    handleClickOpen,
     handleClose,
-    status
+    status,
+    handleVictory
 }: 
 {
     open: boolean,
-    handleClickOpen: Function,
     handleClose: Function,
-    status: boolean
+    status: boolean,
+    handleVictory: Function
 }
 ) {
 
   return (
     <>
-      <Button variant="outlined" onClick={() => {handleClickOpen()}}>
-        Open alert dialog
-      </Button>
       <Dialog
         open={open}
         onClose={() => {handleClose()}}
@@ -40,7 +37,7 @@ export function ResultBox({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleClose()}}>Continuar</Button>
+          <Button onClick={() => {handleVictory(); handleClose()}}>Continuar</Button>
           <Button onClick={() => {handleClose()}}>Menu</Button>
         </DialogActions>
       </Dialog>

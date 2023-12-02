@@ -15,3 +15,16 @@ export function generateTurns(list1: any[], list2: any[]) {
 
     return [turns, isPlayable]
 }
+
+export function clearMock(mock: {players: any[]}){
+    const result: {personagens: any[]} = {personagens: []}
+    result.personagens = [...mock.players.map((item:any) => ({
+        id: item.id,
+        type: item.type,
+        vida: item.vida ? item.vida : null,
+        municao: item.municao ? item.municao : null,
+        mana: item.mana ? item.mana : null,
+    }))]
+
+    return result
+}
