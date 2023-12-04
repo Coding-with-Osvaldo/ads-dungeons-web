@@ -9,14 +9,9 @@ import { gameController } from "@/app/utils/gameController";
 import { ResultBox } from "./components/ResultBox";
 import { useResultHook } from "@/app/hooks/useResultHook";
 import { StartDialog } from "./components/StartDialog";
+import { SoundControl, changeSound } from "./components/SoundDesign";
 
-//@ts-ignore
-import Sound from "react-sound-dkadrios";
-
-let [gameManager, updateAction, mock, actualEntity] = gameController()
-//Da pra mudar isso pra dentro do gameController
-//Lembrar de limpar inimigos ao ganhar partida, ou simplesmente ir apagando eles do array
-
+let [gameManager, updateAction, mock, actualEntity, actualAction, actions] = gameController()
 let result: any = {status: false}
 
 export default function Battle({params}: {params: {id: string}}) {
@@ -28,18 +23,12 @@ export default function Battle({params}: {params: {id: string}}) {
   const [started, setStart] = useState(false)
 
   useEffect(() => {
-    gameManager(params.id, writeWithDelay, setDialogText, handleClickOpen, lastTarget, handleOpenResult, result)
+    gameManager(params.id, writeWithDelay, setDialogText, handleClickOpen, lastTarget, handleOpenResult, result, changeSound, lastAction)
   })
   
   return (
     <main className="flex flex-col h-screen">
-      <Sound 
-        loop={true} 
-        autoLoad={true} 
-        url="https://ia601908.us.archive.org/12/items/Bandcamp-277078843/277078843.mp3" 
-        playStatus={!started ? "STOPPED" : "PLAYING"}
-        volume={10}
-      />
+      <SoundControl/>
       <StartDialog 
         open={!started} 
         handleAccept={() => {updateAction("start");setStart(true)}} 
@@ -50,7 +39,7 @@ export default function Battle({params}: {params: {id: string}}) {
         style={{ flex: 4 }}>
         {mock.enemies.length != 0 && mock.enemies
         .map(item => <Enemy 
-          handleClick={() => {updateAction('waitChooseEnemy'); setLastTarget(item.id); setDialogText("...")}} 
+          handleClick={() => {if(item.vida > 0 && actualAction() == actions["chooseTarget"]) {updateAction('waitChooseEnemy'); setLastTarget(item.id); setDialogText("...")}}} 
           key={item.id} 
           type={item.nome} 
           life={item.vida} 
@@ -62,7 +51,7 @@ export default function Battle({params}: {params: {id: string}}) {
         open = {resultStatus} 
         handleClose={handleCloseResult}
         status={result.status}
-        handleVictory={() => {updateAction("wait"); setStart(false)}}
+        handleVictory={() => {updateAction("wait"); changeSound("backgroundOff");setStart(false)}}
       />  
        <BattleDialog 
         setAction={setLastAction} 

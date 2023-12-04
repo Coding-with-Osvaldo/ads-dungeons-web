@@ -1,7 +1,7 @@
 import { generateRandom, generateTurns, timeout } from "."
 import { handleUpdateParty, handleUpdateScore } from "../hooks/useSubmitCharacter"
 
-export function gameController() : [Function, Function, {players: any[], enemies: any[]}, any]{
+export function gameController() : [Function, Function, {players: any[], enemies: any[]}, any, any, any]{
 
     let actualAction = 0
     let actions = {
@@ -19,6 +19,10 @@ export function gameController() : [Function, Function, {players: any[], enemies
     let turns: any, isPlayable: any = []
 
     const mock: {players: any[], enemies: any[], score: number} = {players: [], enemies: [], score: 0}
+
+    function getAction(){
+        return actualAction
+    }
 
     async function initBattle(id: string){
 
@@ -107,16 +111,19 @@ export function gameController() : [Function, Function, {players: any[], enemies
             }
             isPlayable[lastIndex] = false
         }
-
+        if(actualEntity.vida <= 0){
+          updateTurn()
+        }
         return actualEntity
     }
 
-    function gameManager(id: string, writeWithDelay: Function, setDialogText: Function, handleClickOpen: Function, lastTarget: number, handleOpenResult: Function, result: {status: boolean}){
+    function gameManager(id: string, writeWithDelay: Function, setDialogText: Function, handleClickOpen: Function, lastTarget: number, handleOpenResult: Function, result: {status: boolean}, changeSound: Function, lastAction: string){
         if(actualAction == actions.start){
             (async () => {
               actualAction = actions.wait
               if(mock.score == 0) await initBattle(id)
               else if (mock.score > 0) await resetBattle(id)
+              changeSound("background")
               await writeWithDelay("A batalha esta começando", 0.05)
               await timeout(3)
               await writeWithDelay("3 2 1", 1)
@@ -136,6 +143,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
           if(!isAPlayerAlive){
             result.status = false
             actualAction = actions.wait
+            changeSound("defeat")
             handleOpenResult()
             return
           }
@@ -154,6 +162,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
               mock.score += 1
               await handleUpdateParty(mock)
               await handleUpdateScore(id)
+              changeSound("victory")
               handleOpenResult()
             })()
             return
@@ -172,12 +181,23 @@ export function gameController() : [Function, Function, {players: any[], enemies
           }
         }
         else if(actualAction == actions.chooseTarget){
-          setDialogText("Escolha um inimigo")
+          console.log(lastAction)
+          if(lastAction == "A"){
+            setDialogText("Escolha um inimigo")
+          }else {
+            mock.enemies.forEach((item,index) => {
+              if(item.vida > 0){
+                mock.enemies[index].vida -= 200
+              }
+            })
+            actualAction = actions.turnConstruction
+            setDialogText("..")
+          }
         }
         else if(actualAction == actions.waitChooseEnemy){
           mock.enemies.forEach((item,index) => {
             if(item.id == lastTarget){
-              mock.enemies[index].vida -= 200
+              mock.enemies[index].vida -= 50
             }
           })
           actualAction = actions.turnConstruction
@@ -212,5 +232,5 @@ export function gameController() : [Function, Function, {players: any[], enemies
         actualAction = actions[value]
     }
 
-    return [gameManager, updateAction, mock, actualEntity] 
+    return [gameManager, updateAction, mock, actualEntity, getAction, actions] 
 }
