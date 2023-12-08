@@ -162,7 +162,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
               mock.score += 1
               changeSound("victory")
               await handleUpdateParty(mock)
-              //await handleUpdateScore(id)
+              await handleUpdateScore(id)
               handleOpenResult()
             })()
             return
