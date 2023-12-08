@@ -2,7 +2,7 @@ import { Button } from "@mui/material"
 import { RankingPlayers } from "./components/Ranking"
 import Link from "next/link"
 export default async function Ranking() {
-    const response = await fetch("http://localhost:8080/usuarios",{
+    const response = await fetch("https://ads-dungeons-api.onrender.com/usuarios",{
         cache: "no-cache"
     })
     const data = await response.json()
