@@ -26,7 +26,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
 
     async function initBattle(id: string){
 
-        const playersJson = await fetch(`http://localhost:8080/usuario/`+ id, {
+        const playersJson = await fetch(`https://ads-dungeons-api.onrender.com/usuario/`+ id, {
             headers: {
               "Content-Type": "application/json"
             },
@@ -37,7 +37,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
         mock.players = playersResult.personagens.map((item:any) => {return item.mana != undefined ? {...item, side: "P", maxLife: item.vida, maxMana: item.mana}: {...item, side: "P", maxLife: item.vida, maxMana: 0, mana: 0}})
         mock.score = playersResult.score
 
-        const enemiesJson = await fetch('http://localhost:8080/batalha-random/', {
+        const enemiesJson = await fetch('https://ads-dungeons-api.onrender.com/batalha-random', {
             headers: {
               "Content-Type": "application/json"
             },
@@ -56,7 +56,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
     }
 
     async function resetBattle(id: string){
-      const enemiesJson = await fetch('http://localhost:8080/batalha-random/', {
+      const enemiesJson = await fetch('https://ads-dungeons-api.onrender.com/batalha-random', {
           headers: {
             "Content-Type": "application/json"
           },
@@ -160,9 +160,9 @@ export function gameController() : [Function, Function, {players: any[], enemies
               actualAction = actions.wait
               result.status = true
               mock.score += 1
-              await handleUpdateParty(mock)
-              await handleUpdateScore(id)
               changeSound("victory")
+              await handleUpdateParty(mock)
+              //await handleUpdateScore(id)
               handleOpenResult()
             })()
             return
