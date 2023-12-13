@@ -52,13 +52,13 @@ export default function Battle({params}: {params: {id: string}}) {
         handleClose={handleCloseResult}
         status={result.status}
         handleVictory={() => {updateAction("wait"); changeSound("backgroundOff");setStart(false)}}
+        handleDefeat = {() => { changeSound("backgroundOff"); setStart(false); mock.players = []; mock.enemies = [];mock.score = 0; }}
       />  
        <BattleDialog 
         setAction={setLastAction} 
         handleClose={() => { updateAction("chooseTarget"); handleClose()}} 
         open={open} 
-        attack={100} 
-        defense={50} 
+        getCharacter = {actualEntity}
       />
       {started && <DialogBox text={dialogText} />}
       <div

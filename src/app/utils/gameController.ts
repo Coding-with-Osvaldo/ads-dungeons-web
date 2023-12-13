@@ -1,7 +1,9 @@
+import { randomUUID } from "crypto"
 import { generateRandom, generateTurns, timeout } from "."
 import { handleUpdateParty, handleUpdateScore } from "../hooks/useSubmitCharacter"
+import { v4 as uuid } from 'uuid';
 
-export function gameController() : [Function, Function, {players: any[], enemies: any[]}, any, any, any]{
+export function gameController() : [Function, Function, {players: any[], enemies: any[], score: number}, any, any, any]{
 
     let actualAction = 0
     let actions = {
@@ -31,7 +33,8 @@ export function gameController() : [Function, Function, {players: any[], enemies
               "Content-Type": "application/json"
             },
             method: "get",
-        })
+            cache: "no-cache"
+        }, )
         const playersResult = await playersJson.json()
 
         mock.players = playersResult.personagens.map((item:any) => {return item.mana != undefined ? {...item, side: "P", maxLife: item.vida, maxMana: item.mana}: {...item, side: "P", maxLife: item.vida, maxMana: 0, mana: 0}})
@@ -42,10 +45,11 @@ export function gameController() : [Function, Function, {players: any[], enemies
               "Content-Type": "application/json"
             },
             method: "get",
+            cache: "no-cache"
         })
         const enemiesResult = await enemiesJson.json()
 
-        mock.enemies = enemiesResult.inimigos.map((item:any) => {return {...item, side: "E", maxLife: item.vida}})
+        mock.enemies = enemiesResult.inimigos.map((item:any) => {return {...item, id: uuid(),side: "E", maxLife: item.vida}})
 
         const playerIds = [...mock.players.map(item => item.id)]
         const enemyIds = [...mock.enemies.map(item => item.id)]
@@ -61,10 +65,11 @@ export function gameController() : [Function, Function, {players: any[], enemies
             "Content-Type": "application/json"
           },
           method: "get",
+          cache: "no-cache"
       })
       const enemiesResult = await enemiesJson.json()
 
-      mock.enemies = enemiesResult.inimigos.map((item:any) => {return {...item, side: "E", maxLife: item.vida}})
+      mock.enemies = enemiesResult.inimigos.map((item:any) => {return {...item, id: uuid(),side: "E", maxLife: item.vida}})
 
       const playerIds = [...mock.players.map(item => item.id)]
       const enemyIds = [...mock.enemies.map(item => item.id)]
@@ -176,6 +181,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
             handleClickOpen()
           }
           else {
+
             actualAction = actions.enemyTurn
             setDialogText("Turno do inimigo")
           }
@@ -184,24 +190,99 @@ export function gameController() : [Function, Function, {players: any[], enemies
           console.log(lastAction)
           if(lastAction == "A"){
             setDialogText("Escolha um inimigo")
-          }else {
+          }
+          else if(lastAction == "P"){
+            actualAction = actions.turnConstruction
+            setDialogText("............")
+            return
+          }
+          else if (lastAction == "X"){
+            if(actualEntity.type == "G") {
+              mock.enemies.forEach((item,index) => {
+                if(item.vida > 0){
+                  mock.enemies[index].vida -= 20
+                }
+              })
+              actualAction = actions.turnConstruction
+              setDialogText("..")
+              return
+            }
+            if(actualEntity.type == "S") {
+              if(actualEntity.mana < 20) {
+                (async () => {
+                  actualAction = actions.wait
+                  await writeWithDelay("Falha ao curar, você não tem mana o suficiente", 0.02)
+                  actualAction = actions.turnConstruction
+                  setDialogText("...")
+                })()
+              }
+              actualEntity.mana -= 20
+              mock.enemies.forEach((item,index) => {
+                if(item.vida > 0){
+                  mock.players[index].vida += 10
+                }
+              })
+              actualAction = actions.turnConstruction
+              setDialogText("....")
+            }
+
+            if(actualEntity.type == "A") {
+              actualAction = actions.chooseTarget
+              setDialogText("Escolha um inimigo")
+              return
+            }
+            if(actualEntity.type == "M") {
+              if(actualEntity.mana < 20) {
+                (async () => {
+                  actualAction = actions.wait
+                  await writeWithDelay("Falha ao atacar, você não tem mana o suficiente", 0.02)
+                  actualAction = actions.turnConstruction
+                  setDialogText("....")
+                })()
+              }
+              actualEntity.mana -= 20
+              mock.enemies.forEach((item,index) => {
+                if(item.vida > 0){
+                  mock.enemies[index].vida -= 40
+                }
+              })
+              actualAction = actions.turnConstruction
+              setDialogText(".....")
+            }
+            else {
+              actualAction = actions.turnConstruction
+              setDialogText(".......")
+            }
+          }
+
+        }
+        else if(actualAction == actions.waitChooseEnemy){
+          if(lastAction == "X" && actualEntity.type == "A"){
+            if(actualEntity.municao < 10) {
+              (async () => {
+                actualAction = actions.wait
+                await writeWithDelay("Falha ao atirar, você não tem municão o suficiente", 0.02)
+                actualAction = actions.turnConstruction
+                setDialogText("......")
+              })()
+            }
+            actualEntity.municao -= 10
             mock.enemies.forEach((item,index) => {
-              if(item.vida > 0){
-                mock.enemies[index].vida -= 200
+              if(item.id == lastTarget){
+                mock.enemies[index].vida -= 80
               }
             })
             actualAction = actions.turnConstruction
-            setDialogText("..")
+            setDialogText("......")
+            return
           }
-        }
-        else if(actualAction == actions.waitChooseEnemy){
           mock.enemies.forEach((item,index) => {
             if(item.id == lastTarget){
               mock.enemies[index].vida -= 50
             }
           })
           actualAction = actions.turnConstruction
-          setDialogText("..")
+          setDialogText("........")
         }
         else if(actualAction == actions.enemyTurn){
           (async () => {
@@ -212,6 +293,10 @@ export function gameController() : [Function, Function, {players: any[], enemies
                 alivePlayers.push(player)
               }
             })
+            
+            const ability = actualEntity.habilidades[generateRandom(0, actualEntity.habilidades.length-1)].split(",")
+
+          if(ability[0] == "ataca" && ability[1] == "um"){
             await writeWithDelay("Um inimigo esta atacando",0.07)
             await timeout(2)
             const playerAttacked = alivePlayers[generateRandom(0, alivePlayers.length-1)]
@@ -224,6 +309,29 @@ export function gameController() : [Function, Function, {players: any[], enemies
             await timeout(2)
             actualAction = actions.turnConstruction
             setDialogText("Seu turno agora")
+          }
+          else if(ability[0] == "ataca" && ability[1] == "todos"){
+            await writeWithDelay("Um inimigo esta atacando",0.07)
+            await timeout(2)
+            mock.players.forEach((item,index) => {
+              mock.players[index].vida -= 20
+            })
+            await writeWithDelay("Todos foram atacados",0.05)
+            await timeout(2)
+            actualAction = actions.turnConstruction
+            setDialogText("Seu turno agora")
+          }
+          else if(ability[0] == "cura" && ability[1] == "todos"){
+            await writeWithDelay("Um inimigo esta preparando algo",0.07)
+            await timeout(2)
+            mock.enemies.forEach((item,index) => {
+              mock.enemies[index].vida += 10
+            })
+            await writeWithDelay("Todos os inimigos se curaram",0.05)
+            await timeout(2)
+            actualAction = actions.turnConstruction
+            setDialogText("Seu turno agora")
+          }
           })()
         }
     }
@@ -232,5 +340,9 @@ export function gameController() : [Function, Function, {players: any[], enemies
         actualAction = actions[value]
     }
 
-    return [gameManager, updateAction, mock, actualEntity, getAction, actions] 
+    function getActualEntity(){
+        return actualEntity
+    }
+
+    return [gameManager, updateAction, mock, getActualEntity, getAction, actions] 
 }

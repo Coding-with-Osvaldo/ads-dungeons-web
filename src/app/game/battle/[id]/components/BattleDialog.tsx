@@ -6,18 +6,18 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { DialogContent, DialogContentText, Slide } from "@mui/material";
 
 export default function BattleDialog({
-  attack = 0,
-  defense = 0,
   setAction,
   open,
-  handleClose
+  handleClose,
+  getCharacter
 }: {
-  attack: number;
-  defense: number;
   setAction: Function;
   open: boolean;
-  handleClose: Function
+  handleClose: Function,
+  getCharacter: Function
 }) {
+
+  let character = getCharacter()
 
   return (
     <>
@@ -30,7 +30,7 @@ export default function BattleDialog({
         </DialogTitle>
         <DialogContent>
           <DialogContentText className="text-center pt-3">
-            Ataque = {attack} e Defesa = {defense}
+            {`Personagem: ${character?.nome}, Classe: ${character?.type}`}
           </DialogContentText>
         </DialogContent>
         <DialogActions className="flex justify-center gap-5">

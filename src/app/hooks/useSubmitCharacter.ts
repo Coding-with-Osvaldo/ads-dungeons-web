@@ -18,7 +18,8 @@ export async function handleUpdateParty(mock: {players: any[], enemies: any[]}){
         "Content-Type": "application/json"
       },
       method: "put",
-      body: JSON.stringify(clearMock(mock))
+      body: JSON.stringify(clearMock(mock)),
+      cache: "no-cache"
   })
 }
 
@@ -27,7 +28,8 @@ export async function handleUpdateScore(id: string){
       headers: {
         "Content-Type": "application/json"
       },
-      method: "put"
+      method: "put",
+      cache: "no-cache"
   })
 }
 
