@@ -4,6 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import '@/app/game/components/caracter.css'
 
 export function BasicSelect({
   character,
@@ -11,13 +12,13 @@ export function BasicSelect({
 }: {
   character: string;
   handleChange:
-    | ((event: SelectChangeEvent<string>, child: React.ReactNode) => void)
-    | undefined;
+  | ((event: SelectChangeEvent<string>, child: React.ReactNode) => void)
+  | undefined;
 }) {
   return (
     <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Classe</InputLabel>
+      <FormControl className="inputCharacter" fullWidth>
+        <InputLabel className="classInputConfig" id="demo-simple-select-label ">Classe</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"

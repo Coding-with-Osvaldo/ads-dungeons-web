@@ -1,19 +1,21 @@
 import { SelectChangeEvent, TextField } from "@mui/material";
-import {BasicSelect} from "./BasicSelect";
+import { BasicSelect } from "./BasicSelect";
 import { ChangeEventHandler } from "react";
 import Image from "next/image";
+import '@/app/game/components/caracter.css'
 
 export function CaracterSelect
   ({
-    characterClass,handleClassChange, characterName, handleNameChange}: {characterClass: string; handleClassChange: ((event: SelectChangeEvent<string>, child: React.ReactNode) => void) | undefined;characterName: string; handleNameChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined  
-  }) {
+    characterClass, handleClassChange, characterName, handleNameChange }: {
+      characterClass: string; handleClassChange: ((event: SelectChangeEvent<string>, child: React.ReactNode) => void) | undefined; characterName: string; handleNameChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> | undefined
+    }) {
 
   return (
     <div className="w-full">
-      <div className="w-full pt-4 bg-gray-500">
+      <div className="bodySelect w-full pt-4 bg-gray-500">
         <Image
           alt="Character image"
-          className="mx-auto bg-no-repeat bg-center flex-1 w-80 object-contain"
+          className="bodyCaracter mx-auto bg-no-repeat bg-center flex-1 w-80 object-contain"
           src={characterClass ? "/" + characterClass + ".png" : "/Default.jpg"}
           width={characterClass ? 390 : 320}
           height={characterClass ? 390 : 240}
@@ -21,9 +23,10 @@ export function CaracterSelect
         />
       </div>
       <TextField
+        sx={{ input: { color: 'white' } }}
         value={characterName}
         onChange={handleNameChange}
-        className="w-full pt-4 rounded-l-lg"
+        className="inputCharacter w-full pt-4  mt-4 rounded-l-lg"
         id="filled-basic"
         label="Nome do personagem"
         variant="filled"

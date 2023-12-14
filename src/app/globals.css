@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&family=Silkscreen:wght@400;700&display=swap');
 
 .dead {
     filter: brightness(0.5);
@@ -32,4 +33,24 @@
     animation-name: damaged;
     animation-duration: 0.75s;
     animation-timing-function: ease-in-out;
+}
+
+.bodyMain {
+    background-color: black;
+}
+
+.titleMain {
+    text-align: center;
+    font-family: 'Silkscreen', sans-serif;
+    font-weight: bold;
+    color: white;
+    font-size: 50px;
+}
+
+.buttonConfig {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Silkscreen', sans-serif;
+    color: yellow;
+    text-shadow: 0.1em 0.1em 0.05em red
 }
