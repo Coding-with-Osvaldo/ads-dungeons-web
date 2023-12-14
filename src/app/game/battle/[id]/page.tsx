@@ -10,6 +10,7 @@ import { ResultBox } from "./components/ResultBox";
 import { useResultHook } from "@/app/hooks/useResultHook";
 import { StartDialog } from "./components/StartDialog";
 import { SoundControl, changeSound } from "./components/SoundDesign";
+import Chat from "@/app/chat/Chat";
 
 let [gameManager, updateAction, mock, actualEntity, actualAction, actions] = gameController()
 let result: any = {status: false}
@@ -28,6 +29,7 @@ export default function Battle({params}: {params: {id: string}}) {
   
   return (
     <main className="flex flex-col h-screen">
+      <Chat username={params.id}/>
       <SoundControl/>
       <StartDialog 
         open={!started} 
