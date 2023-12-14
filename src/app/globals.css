@@ -39,6 +39,10 @@
     animation-timing-function: ease-in-out;
 }
 
+.MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] {
+    background: gray;
+}
+
 .bodyMain {
     background-color: black;
 }

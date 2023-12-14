@@ -18,13 +18,16 @@ export function BasicSelect({
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl className="inputCharacter" fullWidth>
-        <InputLabel className="classInputConfig" id="demo-simple-select-label ">Classe</InputLabel>
+        <InputLabel color="warning" className="classInputConfig" id="demo-simple-select-label ">Classe</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={character}
           label="classe"
           onChange={handleChange}
+          sx={{
+            label: { color: 'white' }, 
+            color: "white"}}
         >
           <MenuItem value={"Mago"}>Mago</MenuItem>
           <MenuItem value={"Guerreiro"}>Guerreiro</MenuItem>

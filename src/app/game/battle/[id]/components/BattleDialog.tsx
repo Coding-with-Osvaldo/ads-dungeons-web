@@ -25,7 +25,7 @@ export default function BattleDialog({
         open={open}
         onClose={() => { setAction("P"); handleClose() }}
       >
-        <DialogTitle className="bg-red-500">
+        <DialogTitle className="bg-red-500 font-normal" style={{ fontSize: "1.2em" }}>
           Escolha a próxima ação do seu Personagem:
         </DialogTitle>
         <DialogContent>

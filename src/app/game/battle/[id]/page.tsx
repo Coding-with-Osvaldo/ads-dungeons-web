@@ -23,13 +23,23 @@ export default function Battle({ params }: { params: { id: string } }) {
   const [lastTarget, setLastTarget] = useState(-1)
   const [started, setStart] = useState(false)
 
+  const [chatOpen, setChatOpen] = useState(false);
+
+  const handleClickOpenChat = () => {
+      setChatOpen(true);
+  };
+
+  const handleCloseChat = () => {
+      setChatOpen(false);
+  };
+
   useEffect(() => {
     gameManager(params.id, writeWithDelay, setDialogText, handleClickOpen, lastTarget, handleOpenResult, result, changeSound, lastAction)
   })
 
   return (
     <main className="flex flex-col h-screen">
-      <Chat username={params.id} />
+      <Chat username={params.id} open= {chatOpen} handleClickOpen={handleClickOpenChat} handleClose={handleCloseChat}/>
       <SoundControl />
       <StartDialog
         open={!started}
@@ -59,7 +69,7 @@ export default function Battle({ params }: { params: { id: string } }) {
       <BattleDialog
         setAction={setLastAction}
         handleClose={() => { updateAction("chooseTarget"); handleClose() }}
-        open={open}
+        open={open && !chatOpen}
         getCharacter={actualEntity}
       />
       {started && <DialogBox text={dialogText} />}

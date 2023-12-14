@@ -19,7 +19,7 @@ let stompClient: any = null;
 let username = "Jose";
 let connected = false
 
-export default function Chat({username}: {username: string}){
+export default function Chat({username, open, handleClickOpen, handleClose}: {username: string, open: boolean, handleClickOpen: Function, handleClose: Function}){
     const [messages, setMessages] = useState<any[]>([])
 
     function updateMessages(message: any) {
@@ -81,16 +81,6 @@ export default function Chat({username}: {username: string}){
         );
       }
 
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
 
     useEffect(() => {
         if(!connected) {
@@ -102,23 +92,23 @@ export default function Chat({username}: {username: string}){
     const [text, setText] = useState<string>("")
     
     return <>
-      <Button variant="outlined" onClick={handleClickOpen} style={{ position: "absolute", right: 0, bottom: 0 }}>
+      <Button variant="outlined" onClick={() => {handleClickOpen()}} style={{ position: "absolute", right: 0, bottom: 0 }}>
         Abrir chat
       </Button>
       <Dialog
         open={open}
-        onClose={handleClose}
-        PaperComponent={PaperComponent}
+        onClose={() => {handleClose()}}
         aria-labelledby="draggable-dialog-title"
+        sx={{ width: "40vw" }}
       >
         <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
             Global Chat
         </DialogTitle>
-        <DialogContent style={{ width: "40vw" }}>
+        <DialogContent>
             <div>
                 {messages.map((item, index) => {
                     return <div key={index}>
-                        <p style={{color: "blue",textAlign: username == item.sender ? "right" : "left", marginBottom: "10px"}}>user: {item.sender.split("-")[0]}</p>
+                        <p style={{color: username == item.sender ? "blue" : "red",textAlign: username == item.sender ? "right" : "left", marginBottom: "10px"}}>user: {item.sender.split("-")[0]}</p>
                         <p style={{ textAlign: username == item.sender ? "right" : "left", marginBottom: "10px"}} >{item.content}</p>
                         <p></p>
                     </div>

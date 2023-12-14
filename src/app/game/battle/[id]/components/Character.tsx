@@ -9,12 +9,12 @@ export function Character({ name, life, mana, maxLife, maxMana }: { name: string
         </div>
         <div className="showCharactersGame flex gap-10">
             <div>
-                <h3>Vida</h3>
-                <CircularProgressWithLabel sx={{ label: { color: 'white' } }} value={Math.floor((life / maxLife) * 100)} type="success" />
+                <h3 style={{ textAlign: "center" }}>Vida</h3>
+                <CircularProgressWithLabel style={{ margin: "0 auto" }} sx={{ label: { color: 'white' } }} value={Math.floor((life / maxLife) * 100)} type="success" />
             </div>
             <div>
-                <h3>Mana</h3>
-                <CircularProgressWithLabel value={Math.floor((mana / maxMana) * 100)} type="primary" />
+                <h3 style={{ textAlign: "center" }}>Mana</h3>
+                <CircularProgressWithLabel style={{ margin: "0 auto" }} value={Math.floor((mana / maxMana) * 100)} type="primary" />
             </div>
         </div>
     </div>

@@ -23,13 +23,14 @@ export function CaracterSelect
         />
       </div>
       <TextField
-        sx={{ input: { color: 'white' } }}
+        sx={{ input: { color: 'white', textIndent: "10px"}, label: { textIndent: "10px", margin: "5px" } }}
         value={characterName}
         onChange={handleNameChange}
         className="inputCharacter w-full pt-4  mt-4 rounded-l-lg"
         id="filled-basic"
         label="Nome do personagem"
-        variant="filled"
+        variant="standard"
+        color="warning"
       />
       <div className="pt-4">
         <BasicSelect character={characterClass} handleChange={handleClassChange} />
