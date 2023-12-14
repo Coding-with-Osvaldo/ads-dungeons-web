@@ -23,7 +23,7 @@ export default function BattleDialog({
     <>
       <Dialog
         open={open}
-        onClose={() => {handleClose()}}
+        onClose={() => { setAction("P"); handleClose() }}
       >
         <DialogTitle className="bg-red-500">
           Escolha a próxima ação do seu Personagem:
@@ -34,9 +34,9 @@ export default function BattleDialog({
           </DialogContentText>
         </DialogContent>
         <DialogActions className="flex justify-center gap-5">
-          <h1 onClick={() => { setAction("A");handleClose() }}>Atacar</h1>
-          <h1 onClick={() => { setAction("X");handleClose() }}>Especial</h1>
-          <h1 onClick={() => { setAction("P");handleClose() }}>Passar</h1>
+          <h1 onClick={() => { setAction("A"); handleClose() }}>Atacar</h1>
+          <h1 onClick={() => { setAction("X"); handleClose() }}>Especial</h1>
+          <h1 onClick={() => { setAction("P"); handleClose() }}>Passar</h1>
         </DialogActions>
       </Dialog>
     </>

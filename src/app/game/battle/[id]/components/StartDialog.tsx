@@ -7,23 +7,23 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 export function StartDialog({
-    open,
-    handleAccept,
-    handleCancel,
+  open,
+  handleAccept,
+  handleCancel,
 }
-: 
-{
+  :
+  {
     open: boolean,
     handleAccept: Function,
     handleCancel: Function,
-}
+  }
 ) {
 
   return (
     <>
       <Dialog
         open={open}
-        onClose={() => {handleCancel()}}
+        onClose={() => { handleCancel() }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -32,11 +32,11 @@ export function StartDialog({
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Você deseja recomeçar, ou voltar para o menu?
+            Sua partida começará em breve
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {handleAccept()}}>Ok</Button>
+          <Button onClick={() => { handleAccept() }}>Ok</Button>
         </DialogActions>
       </Dialog>
     </>
