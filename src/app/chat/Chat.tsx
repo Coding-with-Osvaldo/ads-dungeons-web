@@ -28,7 +28,7 @@ export default function Chat({username}: {username: string}){
         setMessages([...backup])
     }
     function connect() {
-        var socket = new SockJS('https://ads-dungeons-api.onrender.com/ws');
+        var socket = new SockJS('http://localhost:8080/ws');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);
@@ -114,12 +114,12 @@ export default function Chat({username}: {username: string}){
         <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
             Global Chat
         </DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ width: "40vw" }}>
             <div>
                 {messages.map((item, index) => {
                     return <div key={index}>
-                        <p>user: {item.sender.split("-")[0]}</p>
-                        <p style={{ textAlign: username == item.sender ? "left" : "right"}} >{item.content}</p>
+                        <p style={{color: "blue",textAlign: username == item.sender ? "right" : "left", marginBottom: "10px"}}>user: {item.sender.split("-")[0]}</p>
+                        <p style={{ textAlign: username == item.sender ? "right" : "left", marginBottom: "10px"}} >{item.content}</p>
                         <p></p>
                     </div>
                 })}

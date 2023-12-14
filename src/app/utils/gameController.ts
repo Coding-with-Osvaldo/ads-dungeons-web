@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid';
 export function gameController() : [Function, Function, {players: any[], enemies: any[], score: number}, any, any, any]{
 
     let actualAction = 0
+
     let actions = {
         musicPermission: 0,
         start: 1,
@@ -16,6 +17,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
         waitChooseEnemy: 6,
         enemyTurn: 7
     }
+
     let actualEntity:any = null
     let lastIndex = -1
     let turns: any, isPlayable: any = []
@@ -28,7 +30,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
 
     async function initBattle(id: string){
 
-        const playersJson = await fetch(`https://ads-dungeons-api.onrender.com/usuario/`+ id, {
+        const playersJson = await fetch(`http://localhost:8080/usuario/`+ id, {
             headers: {
               "Content-Type": "application/json"
             },
@@ -40,7 +42,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
         mock.players = playersResult.personagens.map((item:any) => {return item.mana != undefined ? {...item, side: "P", maxLife: item.vida, maxMana: item.mana}: {...item, side: "P", maxLife: item.vida, maxMana: 0, mana: 0}})
         mock.score = playersResult.score
 
-        const enemiesJson = await fetch('https://ads-dungeons-api.onrender.com/batalha-random', {
+        const enemiesJson = await fetch('http://localhost:8080/batalha-random', {
             headers: {
               "Content-Type": "application/json"
             },
@@ -60,7 +62,7 @@ export function gameController() : [Function, Function, {players: any[], enemies
     }
 
     async function resetBattle(id: string){
-      const enemiesJson = await fetch('https://ads-dungeons-api.onrender.com/batalha-random', {
+      const enemiesJson = await fetch('http://localhost:8080/batalha-random', {
           headers: {
             "Content-Type": "application/json"
           },

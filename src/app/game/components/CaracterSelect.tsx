@@ -16,7 +16,7 @@ export function CaracterSelect
         <Image
           alt="Character image"
           className="bodyCaracter mx-auto bg-no-repeat bg-center flex-1 w-80 object-contain"
-          src={characterClass ? "/" + characterClass + ".png" : "/Default.jpg"}
+          src={characterClass ? "/" + characterClass + ".png" : "/Default.png"}
           width={characterClass ? 390 : 320}
           height={characterClass ? 390 : 240}
           priority

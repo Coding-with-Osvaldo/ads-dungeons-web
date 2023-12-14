@@ -14,7 +14,7 @@ export function RankingPlayers({ rows }: { rows: { name: string, score: number }
       <Table aria-label="simple table">
         <TableHead>
           <TableRow className='rowConfig'>
-            <TableCell className='textDecoration' align='center'>Posição</TableCell>
+          <TableCell className='textDecoration' align='center'>Posição</TableCell>
             <TableCell className='textDecoration' align='center'>Usuario</TableCell>
             <TableCell className='textDecoration' align="center">Score</TableCell>
           </TableRow>

@@ -3,7 +3,7 @@ import { RankingPlayers } from "./components/Ranking"
 import Link from "next/link"
 import '../ranking/components/style.css'
 export default async function Ranking() {
-    const response = await fetch("https://ads-dungeons-api.onrender.com/usuarios", {
+    const response = await fetch("http://localhost:8080/usuarios", {
         cache: "no-cache"
     })
     const data = await response.json()

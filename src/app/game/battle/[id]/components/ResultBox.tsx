@@ -30,7 +30,7 @@ export function ResultBox({
     <>
       <Dialog
         open={open}
-        onClose={() => {handleClose()}}
+        onClose={() => {handleClose(); handleDefeat();router.replace("/")}}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

@@ -1,7 +1,7 @@
 import { clearMock } from "../utils"
 
 export async function handleSubmit(userName: string,characters:{nome: string, type: string}[]) {
-  const resultJson = await fetch(`https://ads-dungeons-api.onrender.com/usuario`, {
+  const resultJson = await fetch(`http://localhost:8080/usuario`, {
       headers: {
         "Content-Type": "application/json"
       },
@@ -13,7 +13,7 @@ export async function handleSubmit(userName: string,characters:{nome: string, ty
 }
 
 export async function handleUpdateParty(mock: {players: any[], enemies: any[]}){
-  await fetch("https://ads-dungeons-api.onrender.com/update-party", {
+  await fetch("http://localhost:8080/update-party", {
       headers: {
         "Content-Type": "application/json"
       },
@@ -24,7 +24,7 @@ export async function handleUpdateParty(mock: {players: any[], enemies: any[]}){
 }
 
 export async function handleUpdateScore(id: string){
-  await fetch("https://ads-dungeons-api.onrender.com/update-score/" + id, {
+  await fetch("http://localhost:8080/update-score/" + id, {
       headers: {
         "Content-Type": "application/json"
       },
