@@ -17,6 +17,7 @@
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-draggable": "^4.4.6",
     "react-sound-dkadrios": "^1.2.1",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
