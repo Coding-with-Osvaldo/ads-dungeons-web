@@ -7,12 +7,26 @@
 }
 
 @keyframes damaged {
-    0%   {transform: translateY(0)}
-    25%  {transform: translateY(2rem)}
-    50%  {transform: translateY(-3rem)}
-    75%  {transform: translateY(2rem)}
-    100% {transform: translateY(0)}
-  }
+    0% {
+        transform: translateY(0)
+    }
+
+    25% {
+        transform: translateY(2rem)
+    }
+
+    50% {
+        transform: translateY(-3rem)
+    }
+
+    75% {
+        transform: translateY(2rem)
+    }
+
+    100% {
+        transform: translateY(0)
+    }
+}
 
 .attacked {
     animation-name: damaged;

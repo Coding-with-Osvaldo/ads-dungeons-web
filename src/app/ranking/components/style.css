@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&family=Silkscreen:wght@400;700&display=swap');
+
+.body {
+    background-color: black;
+}
+
+.textDecoration {
+    font-weight: bold;
+    color: yellow;
+    font-size: 20px;
+    font-family: 'Silkscreen', sans-serif;
+    border: none;
+    text-shadow: 0.1em 0.1em 0.05em red
+}
+
+.titleRanking {
+    text-align: center;
+    font-family: 'Silkscreen', sans-serif;
+    font-weight: bold;
+    color: white;
+    font-size: 30px;
+    text-shadow: 0.1em 0.1em 0.05em red
+}
+
+.userNames {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    font-family: 'Silkscreen', sans-serif;
+}
+
+.scorePoints {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00e5ff;
+    border: none;
+    font-family: 'Silkscreen', sans-serif;
+}
+
+.tableConfig {
+    background-color: "black";
+    border: 1px solid black;
+    border: none;
+}
+
+.rowConfig {
+    background-color: black;
+    border: none;
+}
